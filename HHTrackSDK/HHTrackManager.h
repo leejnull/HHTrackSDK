@@ -17,6 +17,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// 动态属性，每次都会调用获取
 @property (nonatomic, copy) NSDictionary<NSString *, id> *(^onDynamicProperties)(void);
 
+/// 事件流
+@property (nonatomic, copy) void (^onEventStream)(NSString *event);
+
 /// 上传数量大小，默认50
 @property (nonatomic, assign) NSUInteger flushBulkSize;
 

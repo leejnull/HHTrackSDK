@@ -181,15 +181,15 @@ static HHTrackManager *instance = nil;
 }
 
 - (void)printEvent:(NSDictionary *)event {
-#if DEBUG
-    NSError *error = nil;
-    NSData *data = [NSJSONSerialization dataWithJSONObject:event options:NSJSONWritingPrettyPrinted error:&error];
-    if (error) {
-        NSLog(@"JSON Serialized Error: %@", error);
+    if (self.onEventStream) {
+        NSError *error = nil;
+        NSData *data = [NSJSONSerialization dataWithJSONObject:event options:NSJSONWritingPrettyPrinted error:&error];
+        if (error) {
+            NSLog(@"JSON Serialized Error: %@", error);
+        }
+        NSString *json = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        self.onEventStream(json);
     }
-    NSString *json = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    NSLog(@"[Event]: %@", json);
-#endif
 }
 
 #pragma mark - setter
