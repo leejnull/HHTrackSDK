@@ -46,7 +46,6 @@
 }
 
 - (void)handleOneButtonTapped {
-    [[HHTrackManager sharedInstance] login:@"1024"];
     [[HHTrackManager sharedInstance] track:@"LoginResult" properties:@{
         @"account": @"13866739321",
         @"login_method": @"手机号一键登录",

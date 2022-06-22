@@ -21,7 +21,6 @@
 
 /// UUID+时间戳 md5
 @property (nonatomic, copy) NSString *sessionId;
-@property (nonatomic, copy) NSString *loginId;
 @property (nonatomic, strong) NSDate *appStartDate;
 
 @property (nonatomic, strong) HHTrackDatabase *database;
@@ -31,9 +30,7 @@
 
 @end
 
-@implementation HHTrackManager {
-    NSString *_anonymousId;
-}
+@implementation HHTrackManager
 
 static HHTrackManager *instance = nil;
 
@@ -49,7 +46,6 @@ static HHTrackManager *instance = nil;
     self = [super init];
     if (self) {
         _automaticProperties = [self collectAutomaticProperties];
-        _loginId = [HHTrackTool loginId];
         _database = [[HHTrackDatabase alloc] init];
         _network = [[HHTrackNetwork alloc] initWithServerURL:[NSURL URLWithString:url]];
         _serialQueue = dispatch_queue_create([NSString stringWithFormat:@"hh_track_serial_queue_%p", self].UTF8String, DISPATCH_QUEUE_SERIAL);
@@ -118,12 +114,6 @@ static HHTrackManager *instance = nil;
 
 #pragma mark - method
 
-- (void)login:(NSString *)loginId {
-    self.loginId = loginId;
-    
-    [HHTrackTool saveLoginId:loginId];
-}
-
 - (void)flush {
     dispatch_async(self.serialQueue, ^{
         [self flushByEventCount:self.flushBulkSize];
@@ -173,8 +163,6 @@ static HHTrackManager *instance = nil;
             [commonDict addEntriesFromDictionary:dynamicProperties];
         }
     }
-    // 用户id or 空
-    commonDict[@"distinctId"] = self.loginId ?: @"";
     
     dataDict[@"common"] = commonDict;
     dataDict[@"event"] = properties ?: @{};
@@ -229,36 +217,6 @@ static HHTrackManager *instance = nil;
     // 设备ID
     properties[@"deviceId"] = [HHTrackTool deviceId];
     return properties;
-}
-
-- (void)setAnonymousId:(NSString *)anonymousId {
-    _anonymousId = anonymousId;
-    
-    [HHTrackTool saveAnonymousId:anonymousId];
-}
-
-- (NSString *)anonymousId {
-    if (_anonymousId) {
-        return _anonymousId;
-    }
-    _anonymousId = [HHTrackTool anonymousId];
-    if (_anonymousId) {
-        return _anonymousId;
-    }
-    _anonymousId = [HHTrackTool IDFA];
-    if (_anonymousId) {
-        return _anonymousId;
-    }
-    _anonymousId = [HHTrackTool IDFV];
-    if (_anonymousId) {
-        return _anonymousId;
-    }
-    _anonymousId = [HHTrackTool UUID];
-    if (_anonymousId) {
-        return _anonymousId;
-    }
-    [HHTrackTool saveAnonymousId:_anonymousId];
-    return _anonymousId;
 }
 
 @end
