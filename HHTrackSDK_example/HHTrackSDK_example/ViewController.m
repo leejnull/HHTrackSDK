@@ -25,7 +25,7 @@
     UIButton *oneButton = [UIButton buttonWithType:UIButtonTypeCustom];
     oneButton.frame = CGRectMake(40, 100, 80, 40);
     oneButton.backgroundColor = [UIColor.blueColor colorWithAlphaComponent:0.8];
-    [oneButton setTitle:@"按钮1" forState:UIControlStateNormal];
+    [oneButton setTitle:@"登录按钮" forState:UIControlStateNormal];
     [oneButton addTarget:self action:@selector(handleOneButtonTapped) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:oneButton];
     
@@ -46,6 +46,8 @@
 }
 
 - (void)handleOneButtonTapped {
+    [[HHTrackManager sharedInstance] login:@"1024"];
+    [[NSUserDefaults standardUserDefaults] setObject:@"1024" forKey:@"user_id"];
     [[HHTrackManager sharedInstance] track:@"LoginResult" properties:@{
         @"account": @"13866739321",
         @"login_method": @"手机号一键登录",

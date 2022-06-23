@@ -27,6 +27,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (void)registeWithUrl:(NSString *)url;
 
+- (void)login:(NSString *)loginId;
+- (void)logout;
+
 - (void)track:(NSString *)eventName properties:(NSDictionary<NSString *, id> * _Nullable)properties;
 
 - (void)flush;

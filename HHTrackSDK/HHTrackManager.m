@@ -21,6 +21,7 @@
 
 /// UUID+时间戳 md5
 @property (nonatomic, copy) NSString *sessionId;
+@property (nonatomic, copy) NSString *loginId;
 @property (nonatomic, strong) NSDate *appStartDate;
 
 @property (nonatomic, strong) HHTrackDatabase *database;
@@ -46,6 +47,7 @@ static HHTrackManager *instance = nil;
     self = [super init];
     if (self) {
         _automaticProperties = [self collectAutomaticProperties];
+        _loginId = [HHTrackTool loginId];
         _database = [[HHTrackDatabase alloc] init];
         _network = [[HHTrackNetwork alloc] initWithServerURL:[NSURL URLWithString:url]];
         _serialQueue = dispatch_queue_create([NSString stringWithFormat:@"hh_track_serial_queue_%p", self].UTF8String, DISPATCH_QUEUE_SERIAL);
@@ -113,6 +115,20 @@ static HHTrackManager *instance = nil;
 }
 
 #pragma mark - method
+
+- (void)login:(NSString *)loginId {
+    if ([self.loginId isEqualToString:loginId]) {
+        return;
+    }
+    [HHTrackTool saveLoginId:loginId];
+    self.loginId = loginId;
+    [self flush];
+}
+
+- (void)logout {
+    self.loginId = nil;
+    [self flush];
+}
 
 - (void)flush {
     dispatch_async(self.serialQueue, ^{

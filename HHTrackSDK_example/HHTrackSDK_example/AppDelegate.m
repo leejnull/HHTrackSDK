@@ -17,10 +17,22 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    
-    [HHTrackManager registeWithUrl:@""];
-    [HHTrackManager sharedInstance].flushBulkSize = 5;
-    
+    [HHTrackManager registeWithUrl:@"http://cn-dev02-api.henhenchina.com/cpp-databricks/v1/collect"];
+    [HHTrackManager sharedInstance].flushBulkSize = 10;
+    [HHTrackManager sharedInstance].onDynamicProperties = ^NSDictionary<NSString *,id> * _Nonnull{
+        NSMutableDictionary *dict = @{}.mutableCopy;
+        NSString *userId = [[NSUserDefaults standardUserDefaults] objectForKey:@"user_id"];
+        if (userId.length) {
+            [dict addEntriesFromDictionary:@{
+                @"user_id": userId,
+                @"user_type": @1
+            }];
+        }
+        return dict;
+    };
+    [HHTrackManager sharedInstance].onEventStream = ^(NSString * _Nonnull event) {
+        NSLog(@"[Event]: %@", event);
+    };
     return YES;
 }
 

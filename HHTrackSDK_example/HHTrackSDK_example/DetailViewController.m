@@ -23,7 +23,7 @@
     UIButton *oneButton = [UIButton buttonWithType:UIButtonTypeCustom];
     oneButton.frame = CGRectMake(40, 100, 80, 40);
     oneButton.backgroundColor = [UIColor.blueColor colorWithAlphaComponent:0.8];
-    [oneButton setTitle:@"按钮1" forState:UIControlStateNormal];
+    [oneButton setTitle:@"强刷按钮" forState:UIControlStateNormal];
     [oneButton addTarget:self action:@selector(handleOneButtonTapped) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:oneButton];
 }
