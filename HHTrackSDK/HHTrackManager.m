@@ -99,7 +99,7 @@ static HHTrackManager *instance = nil;
     self.appStartDate = [NSDate date];
     
     NSDictionary *properties = @{
-        @"resumeFromBackground": @(!self.applicationDidFinishLaunching),
+        @"resumeFromBackground": [NSNumber numberWithBool:!self.applicationDidFinishLaunching],
     };
     
     if (!self.applicationDidFinishLaunching) {
