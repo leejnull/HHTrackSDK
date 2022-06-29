@@ -58,7 +58,7 @@ typedef void(^HHTrackURLSessionTaskCompletionHandler)(NSData * _Nullable data, N
 - (NSURLRequest *)buildRequestWithJSONDict:(NSDictionary *)dict {
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:self.serverURL];
     NSError *error;
-    request.HTTPBody = [NSJSONSerialization dataWithJSONObject:dict options:NSJSONWritingPrettyPrinted error:&error];
+    request.HTTPBody = [NSJSONSerialization dataWithJSONObject:dict options:NSJSONWritingFragmentsAllowed error:&error];
     if (error) {
         NSLog(@"build request error: %@", error);
         return nil;
