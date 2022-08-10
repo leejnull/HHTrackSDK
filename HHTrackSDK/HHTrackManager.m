@@ -232,6 +232,10 @@ static HHTrackManager *instance = nil;
     properties[@"screenWidth"] = @([UIScreen mainScreen].bounds.size.width);
     // 设备ID
     properties[@"deviceId"] = [HHTrackTool deviceId];
+    // 版本
+    properties[@"sdkVersion"] = @"1.1.0";
+    // 平台
+    properties[@"platform"] = @"ios";
     return properties;
 }
 
